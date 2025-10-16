@@ -1,3 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  :root {
+    --primary: #e0e8e5;     /* Blue-500 */
+    --secondary: #008069;   /* Violet-500 */
+  }
+}

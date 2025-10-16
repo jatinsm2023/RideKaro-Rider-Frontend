@@ -3,10 +3,18 @@ module.exports = function (api) {
   let plugins = [];
 
   plugins.push('react-native-worklets/plugin');
+  plugins.push(['module:react-native-dotenv', {
+    moduleName: '@env',
+    path: '.env',
+    blocklist: null,
+    allowlist: null,
+    safe: false,
+    allowUndefined: true,
+    verbose: true
+  }]);
 
   return {
     presets: [['babel-preset-expo', { jsxImportSource: 'nativewind' }], 'nativewind/babel'],
-
     plugins,
   };
 };
