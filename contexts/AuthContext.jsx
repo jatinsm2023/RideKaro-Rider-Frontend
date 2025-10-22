@@ -12,7 +12,7 @@ export const useAuth = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [rider, setRider] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -22,11 +22,11 @@ export const AuthProvider = ({ children }) => {
 
   const checkAuthStatus = async () => {
     try {
-      const userData = await AsyncStorage.getItem('user');
+      const riderData = await AsyncStorage.getItem('rider');
       const accessToken = await AsyncStorage.getItem('accessToken');
       
-      if (userData && accessToken) {
-        setUser(JSON.parse(userData));
+      if (riderData && accessToken) {
+        setRider(JSON.parse(riderData));
         setIsAuthenticated(true);
       }
     } catch (error) {
@@ -36,13 +36,13 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = async (userData, tokens) => {
+  const login = async (riderData, tokens) => {
     try {
-      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      await AsyncStorage.setItem('rider', JSON.stringify(riderData));
       await AsyncStorage.setItem('accessToken', tokens.accessToken);
       await AsyncStorage.setItem('refreshToken', tokens.refreshToken);
       
-      setUser(userData);
+      setRider(riderData);
       setIsAuthenticated(true);
     } catch (error) {
       console.error('Error during login:', error);
@@ -52,8 +52,8 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await AsyncStorage.multiRemove(['user', 'accessToken', 'refreshToken']);
-      setUser(null);
+      await AsyncStorage.multiRemove(['rider', 'accessToken', 'refreshToken']);
+      setRider(null);
       setIsAuthenticated(false);
     } catch (error) {
       console.error('Error during logout:', error);
@@ -62,7 +62,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const value = {
-    user,
+    rider,
     isAuthenticated,
     isLoading,
     login,

@@ -9,7 +9,7 @@ import MainAppContainer from './Pages/MainAppContainer';
 const Stack = createStackNavigator();
 
 export const Navigation = () => {
-  const { user, isLoading } = useAuth();
+  const { rider, isLoading } = useAuth();
 
   // Show loading screen while checking for stored credentials
   if (isLoading) {
@@ -23,11 +23,11 @@ export const Navigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {user ? (
-          // User is signed in
+        {rider ? (
+          // Rider is signed in
           <Stack.Screen name="Main" component={MainAppContainer} />
         ) : (
-          // User is not signed in
+          // Rider is not signed in
           <Stack.Screen name="Auth" component={AuthScreen} />
         )}
       </Stack.Navigator>

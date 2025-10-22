@@ -2,9 +2,9 @@
 
 echo "🧹 Clearing React Native cache..."
 
-# Stop any running Metro processes
-pkill -f "expo start" 2>/dev/null || true
-pkill -f "metro" 2>/dev/null || true
+# # Stop any running Metro processes
+# pkill -f "expo start" 2>/dev/null || true
+# pkill -f "metro" 2>/dev/null || true
 
 # Clear various cache directories
 rm -rf .expo 2>/dev/null || true

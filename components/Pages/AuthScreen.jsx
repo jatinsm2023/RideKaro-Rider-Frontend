@@ -23,6 +23,7 @@ const AuthScreen = ({ navigation }) => {
   const [name, setName] = useState(''); // only used for signup
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState(''); // only used for signup
   const [confirmPassword, setConfirmPassword] = useState(''); // signup only
 
   const [loading, setLoading] = useState(false);
@@ -35,6 +36,7 @@ const AuthScreen = ({ navigation }) => {
       text2: message,
       position: 'top',
       visibilityTime: 1500,
+      autoHide: true,
     });
   };
 
@@ -59,20 +61,20 @@ const AuthScreen = ({ navigation }) => {
         password: '***',
       });
 
-      const response = await axios.post(`${API_BASE_URL}/v0/users/login`, {
+      const response = await axios.post(`${API_BASE_URL}/v0/rider/login`, {
         email,
         password,
       });
 
       console.log('✅ Login successful:', response.data);
 
-      // Store tokens and user data
+      // Store tokens and rider data
       await AsyncStorage.setItem('accessToken', response.data.accessToken);
       await AsyncStorage.setItem('refreshToken', response.data.refreshToken);
-      await AsyncStorage.setItem('user', JSON.stringify(response.data.user));
+      await AsyncStorage.setItem('rider', JSON.stringify(response.data.rider));
 
-      // Use auth context to store user data
-      await login(response.data.user, {
+      // Use auth context to store rider data
+      await login(response.data.rider, {
         accessToken: response.data.accessToken,
         refreshToken: response.data.refreshToken,
       });
@@ -104,7 +106,7 @@ const AuthScreen = ({ navigation }) => {
   };
 
   const handleSignUp = async () => {
-    if (!name || !email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword || !phone) {
       showToast('error', 'Validation Error', 'Please fill in all fields');
       return;
     }
@@ -126,12 +128,14 @@ const AuthScreen = ({ navigation }) => {
         name,
         email,
         password: '***',
+        phone,
       });
 
-      const response = await axios.post(`${API_BASE_URL}/v0/users/create`, {
+      const response = await axios.post(`${API_BASE_URL}/v0/rider/create`, {
         name,
         email,
         password,
+        phone_number: phone,
       });
 
       console.log('✅ SignUp successful:', response.data);
@@ -186,6 +190,20 @@ const AuthScreen = ({ navigation }) => {
             </View>
           )}
 
+          {isSignUp && (
+            <View className="mb-6">
+              <Text className="text-base font-semibold text-gray-700 mb-2">Phone Number</Text>
+              <TextInput
+                className="border border-gray-300 rounded-lg p-4 text-base bg-gray-50"
+                placeholder="Enter your phone number"
+                value={phone}
+                onChangeText={setPhone}
+                autoCapitalize="none"
+                autoCorrect={false}
+              />
+            </View>
+          )}
+
           <View className="mb-6">
             <Text className="text-base font-semibold text-gray-700 mb-2">Email</Text>
             <TextInput
@@ -198,6 +216,8 @@ const AuthScreen = ({ navigation }) => {
               autoCorrect={false}
             />
           </View>
+
+          
 
           <View className="mb-6">
             <Text className="text-base font-semibold text-gray-700 mb-2">Password</Text>

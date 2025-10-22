@@ -10,7 +10,7 @@ import Toast from 'react-native-toast-message';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Dashboard = () => {
-  const { user, logout } = useAuth();
+  const { rider, logout } = useAuth();
 
   const showToast = (type, title, message) => {
     Toast.show({
@@ -18,7 +18,8 @@ const Dashboard = () => {
       text1: title,
       text2: message,
       position: 'top',
-      visibilityTime: 1000,
+      visibilityTime: 1500,
+      autoHide: true,
     });
   };
 
@@ -37,7 +38,7 @@ const Dashboard = () => {
           onPress: async () => {
             try {
               // Clear stored tokens
-              await AsyncStorage.multiRemove(['accessToken', 'refreshToken', 'user']);
+              await AsyncStorage.multiRemove(['accessToken', 'refreshToken', 'rider']);
               await logout();
               showToast('success', 'Logged Out', 'You have been logged out successfully');
             } catch (error) {
@@ -59,10 +60,10 @@ const Dashboard = () => {
         
         <View className="bg-blue-50 rounded-lg p-4 mb-6">
           <Text className="text-xl font-semibold text-gray-700 mb-2 text-center">
-            Hello, {user?.name || 'User'}! 👋
+            Hello, {rider?.name || 'Rider'}! 👋
           </Text>
           <Text className="text-gray-600 text-center">
-            {user?.email}
+            {rider?.email}
           </Text>
         </View>
         
